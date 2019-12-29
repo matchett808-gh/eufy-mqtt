@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "eslint-fix": "./node_modules/.bin/eslint --fix index.js",
+    "eslint": "./node_modules/.bin/eslint index.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,8 @@
   "homepage": "https://bitbucket.org/matchett808/eufy-mqtt#readme",
   "dependencies": {
     "eufy-robovac": "^1.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.19.0"
   }
 }
