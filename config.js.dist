@@ -1,0 +1,12 @@
+
+var config = {
+    "mqttoptions": {
+        "username": "mqtt_username",
+        "password": "mqtt_password",
+        "port": mqtt_port
+    },
+    "mqtturl": "mqtt://",
+    "base_topic": "string base topic with trailing slash/",
+    "device_id": "",
+    "local_key": ""
+}
