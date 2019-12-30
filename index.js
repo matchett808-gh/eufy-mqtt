@@ -92,15 +92,13 @@ async function getStatus () {
                 if(dps['15'] !== 'undefined' ) { statep.cleaning = r.statuses.dps['15']; }
 
 
-                if(dps['15'] === 'Recharge') {
+                if(dps['15'] === 'Recharge' || dps['101'] === true) {
                     statep.state = 'returning';
-                } else if(dps['103']) {
-                    statep.state = 'idle'; 
-                }  else if(dps['2']) {
+                }  else if(dps['15'] === 'standby' || dps['15'] === 'Sleeping') {
                     statep.state = 'paused';
-                } else if(dps['15'] === 'Running') {
+                } else if(dps['15'] === 'Running' || dps['5'] !== 'Nosweep') {
                     statep.state = 'cleaning'; 
-                } else if(dps['15'] === 'Charging') {
+                } else if(dps['15'] === 'Charging' || dps['15'] === 'completed') {
                     statep.state = 'docked';
                 } else if(dps['106'] !== 'no_error' && dps['106']) {
                     statep.state = 'error';
