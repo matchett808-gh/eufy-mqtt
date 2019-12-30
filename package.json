@@ -16,7 +16,8 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/matchett808/eufy-mqtt#readme",
   "dependencies": {
-    "eufy-robovac": "^1.2.0"
+    "eufy-robovac": "^1.2.0",
+    "mqtt": "^3.0.0"
   },
   "devDependencies": {
     "eslint": "^3.19.0"

@@ -1,13 +1,12 @@
-var config = require("./config.js"); 
+var config = require("./config.json"); 
 var mqtt = require("mqtt"); 
-let lib = require('./dist/index');
+let lib = require('eufy-robovac');
 const RoboVac = lib.RoboVac;
 
 let robovacSettings = {
     deviceId: config.device_id,
     localKey: config.local_key
 };
-
 const r = new RoboVac(robovacSettings);
 var client = mqtt.connect(config.mqtturl, config.mqttoptions);
 
@@ -15,7 +14,6 @@ client.on('connect', () => {
     let topics = [];
     topics.push(config.base_topic+'vacuum/command');
     topics.push(config.base_topic+'vacuum/set_fan_speed');
-    console.log(topics);
     client.subscribe(topics);
 });
 
@@ -61,8 +59,6 @@ async function getStatus () {
                 if(dps['15'] !== 'undefined' ) { statep.cleaning = r.statuses.dps['15']; }
 
 
-                statep.state = 'idle';
-                console.log(dps);
                 if(dps['15'] === 'Recharge') {
                     statep.state = 'returning';
                 } else if(dps['103']) {
@@ -73,7 +69,7 @@ async function getStatus () {
                     statep.state = 'cleaning'; 
                 } else if(dps['15'] === 'Charging') {
                     statep.state = 'docked';
-                } else if(dps['106'] !== 'no_error' ) {
+                } else if(dps['106'] !== 'no_error' && dps['106']) {
                     statep.state = 'error';
                 }
                 Object.keys(statep).forEach((key) => {
@@ -83,6 +79,9 @@ async function getStatus () {
                 });
                 let a = Object.assign(retainedValues, statep);
                 retainedValues = a;
+                if ( (! retainedValues.state)) {
+                    retainedValues.state = 'idle';
+                }
                 client.publish(config.base_topic+'vacuum/state', JSON.stringify(retainedValues), {retain: true});
 
 }
