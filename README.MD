@@ -1,11 +1,12 @@
 # Basic support - Haven't even attempted fan mode or any other features
 
+Fan speed and spot cleaning now works
 
 Hass config
 ```
 vacuum:
   - platform: mqtt
-    name: "VAC"
+    name: "Effie"
     schema: state
     supported_features:
       - start
@@ -15,8 +16,19 @@ vacuum:
       - battery
       - status
       - locate
-    command_topic: "VAC/vacuum/command"
-    state_topic: "VAC/vacuum/state"
+      - clean_spot
+      - fan_speed
+    command_topic: "effie/vacuum/command"
+    state_topic: "effie/vacuum/state"
+    set_fan_speed_topic: "effie/vacuum/set_fan_speed"
+    fan_speed_list:
+      - No Suction
+      - Standard
+      - Boost IQ
+      - Max
+
+
+
 
 ```
 
