@@ -2,6 +2,7 @@ var config = require("./config.json");
 var mqtt = require("mqtt"); 
 let lib = require('eufy-robovac');
 const RoboVac = lib.RoboVac;
+RoboVac.maxStatusUpdateAge = 1000;
 const CleanSpeed = lib.CleanSpeed;
 const WorkMode = lib.WorkMode;
 
@@ -76,8 +77,9 @@ client.on('message', (topic, message) => {
 let retainedValues = {};
 // eslint-disable-next-line
 async function getStatus () {
-                await r.getStatuses();
+                await r.getStatuses(true);
                 let dps = r.statuses.dps;
+                console.log(r.statuses);
                 let statep = {};
                 if(dps['104'] !== 'undefined' ) { 
                   // eslint-disable-next-line
@@ -92,14 +94,14 @@ async function getStatus () {
                 if(dps['15'] !== 'undefined' ) { statep.cleaning = r.statuses.dps['15']; }
 
 
-                if(dps['15'] === 'Recharge' || dps['101'] === true) {
+                if(dps['15'] === 'Recharge' || dps['101'] === 'true') {
                     statep.state = 'returning';
                 }  else if(dps['15'] === 'standby' || dps['15'] === 'Sleeping') {
                     statep.state = 'paused';
-                } else if(dps['15'] === 'Running' || dps['5'] !== 'Nosweep') {
-                    statep.state = 'cleaning'; 
                 } else if(dps['15'] === 'Charging' || dps['15'] === 'completed') {
                     statep.state = 'docked';
+                } else if(dps['15'] === 'Running' || dps['5'] !== 'Nosweep') {
+                    statep.state = 'cleaning'; 
                 } else if(dps['106'] !== 'no_error' && dps['106']) {
                     statep.state = 'error';
                 }
