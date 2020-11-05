@@ -10,6 +10,9 @@ let robovacSettings = {
     deviceId: config.device_id,
     localKey: config.local_key
 };
+if(config.ip) {
+    robovacSettings.ip = config.ip
+}
 const r = new RoboVac(robovacSettings);
 var client = mqtt.connect(config.mqtturl, config.mqttoptions);
 
@@ -79,7 +82,6 @@ let retainedValues = {};
 async function getStatus () {
                 await r.getStatuses(true);
                 let dps = r.statuses.dps;
-                console.log(r.statuses);
                 let statep = {};
                 if(dps['104'] !== 'undefined' ) { 
                   // eslint-disable-next-line
